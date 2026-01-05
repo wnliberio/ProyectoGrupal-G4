@@ -1,6 +1,15 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const BACKEND_URL = 'http://192.168.18.18:8000';
+// Obtener ambiente de app.json
+const ENV = Constants.expoConfig?.extra?.ENV || 'dev';
+
+const BACKEND_URLS: Record<string, string> = {
+  dev: 'http://3.82.48.178:8000',
+  prod: 'http://54.167.46.149:8000',
+};
+
+const BACKEND_URL = BACKEND_URLS[ENV];
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
@@ -16,7 +25,6 @@ export const documentsAPI = {
         type: 'application/pdf',
         name: fileName,
       } as any);
-
       const response = await apiClient.post(
         `/documents/upload?user_id=${userId}`,
         formData,
@@ -33,7 +41,6 @@ export const documentsAPI = {
       );
     }
   },
-
   list: async (userId: string) => {
     try {
       const response = await apiClient.get(`/documents/${userId}`);
@@ -42,7 +49,6 @@ export const documentsAPI = {
       return [];
     }
   },
-
   delete: async (userId: string, documentId: string) => {
     try {
       const response = await apiClient.delete(
@@ -72,7 +78,6 @@ export const chatAPI = {
       );
     }
   },
-
   getHistory: async (userId: string, documentId: string) => {
     try {
       const response = await apiClient.get('/chat/history', {
