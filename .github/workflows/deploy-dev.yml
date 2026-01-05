@@ -1,0 +1,21 @@
+name: Deploy to Dev
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Deploy to EC2 Dev
+        env:
+          EC2_HOST: ${{ secrets.EC2_DEV_HOST }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+          EC2_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST 'cd /home/ubuntu && git clone --depth 1 https://github.com/wnliberio/ProyectoGrupal-G4.git ProyectoGrupal-G4 || (cd ProyectoGrupal-G4 && git pull) && docker-compose up -d'
