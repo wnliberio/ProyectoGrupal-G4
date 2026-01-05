@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:7
+    
+    container_name: docchat-mongo-dev
+    environment:
+      MONGO_INITDB_DATABASE: ai_docs_dev
+    ports:
+      - 27018:27017
+    volumes:
+      - mongo_dev:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - docchat-net
+
+  backend-chat:
+    build:
+      context: ./backend-chat
+      dockerfile: Dockerfile
+    container_name: docchat-backend-chat-dev
+    ports:
+      - "8000:8000"
+    environment:
+      MONGO_URI: mongodb://mongo:27017
+      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+      DATABASE_NAME: ai_docs_dev
+      ENV: development
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./backend-chat:/app
+      - /app/__pycache__
+    networks:
+      - docchat-net
+
+volumes:
+  mongo_dev:
+
+networks:
+  docchat-net:
+    driver: bridge
