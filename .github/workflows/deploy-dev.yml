@@ -14,10 +14,18 @@ jobs:
           EC2_HOST: ${{ secrets.EC2_DEV_HOST }}
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_KEY: ${{ secrets.EC2_PRIVATE_KEY }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          MONGO_URI: ${{ secrets.MONGO_URI }}
+          ENV_FILE: ${{ secrets.ENV_FILE }}
         run: |
           mkdir -p ~/.ssh
           echo "$EC2_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "cd /home/ubuntu && rm -rf ProyectoGrupal-G4 && git clone --depth 1 https://github.com/wnliberio/ProyectoGrupal-G4.git && cd ProyectoGrupal-G4 && GOOGLE_API_KEY=$GOOGLE_API_KEY MONGO_URI=$MONGO_URI docker-compose down && docker-compose up -d"
+          ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST 'bash -s' << ENDSSH
+          cd /home/ubuntu && rm -rf ProyectoGrupal-G4
+          git clone --depth 1 https://github.com/wnliberio/ProyectoGrupal-G4.git
+          cd ProyectoGrupal-G4
+          cat > backend-chat/.env << 'EOF'
+          $ENV_FILE
+          EOF
+          docker-compose down
+          docker-compose up -d
+          ENDSSH
