@@ -173,4 +173,4 @@ Usuario:
     save_message(user_id, document_id, "user", message)
     save_message(user_id, document_id, "assistant", answer)
 
-    return {"answer": answer}
+    return {"answer": answer, "version": "DEV"}
