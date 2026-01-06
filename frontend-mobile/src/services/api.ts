@@ -4,11 +4,11 @@ import Constants from 'expo-constants';
 // Obtener ambiente de app.json
 const ENV = Constants.expoConfig?.extra?.ENV || 'dev';
 
-const BACKEND_URLS: Record<string, string> = {
-  dev: 'http://3.82.48.178:8000',
-  prod: 'http://54.167.46.149:8000',
-};
 
+const BACKEND_URLS: Record<string, string> = {
+  dev: 'http://54.210.242.221:8000',
+  prod: 'http://54.174.130.226:8000',
+};
 const BACKEND_URL = BACKEND_URLS[ENV];
 
 const apiClient = axios.create({
