@@ -63,6 +63,7 @@ export const documentsAPI = {
   },
 };
 
+
 export const chatAPI = {
   send: async (userId: string, documentId: string, message: string) => {
     try {
