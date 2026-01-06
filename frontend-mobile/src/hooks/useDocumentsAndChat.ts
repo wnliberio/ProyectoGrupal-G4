@@ -30,7 +30,7 @@ export const useDocumentsAndChat = (userId: string, documentId?: string) => {
         const result = await documentsAPI.upload(userId, fileUri, fileName);
         const newDoc: Document = {
           document_id: result.document_id,
-          file_name: fileName,
+          file_name: result.file_name,
           file_size: 0,
           uploaded_at: new Date().toISOString(),
         };
