@@ -33,9 +33,6 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
-    volumes:
-      - ./backend-chat:/app
-      - /app/__pycache__
     networks:
       - docchat-net
 
