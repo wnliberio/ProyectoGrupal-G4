@@ -3,7 +3,6 @@ version: '3.8'
 services:
   mongo:
     image: mongo:7
-    
     container_name: docchat-mongo-dev
     environment:
       MONGO_INITDB_DATABASE: ai_docs_dev
@@ -26,9 +25,9 @@ services:
     container_name: docchat-backend-chat-dev
     ports:
       - "8000:8000"
+    env_file:
+      - backend-chat/.env
     environment:
-      MONGO_URI: mongodb://mongo:27017
-      GOOGLE_API_KEY: ${GOOGLE_API_KEY}
       DATABASE_NAME: ai_docs_dev
       ENV: development
     depends_on:
