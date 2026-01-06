@@ -163,7 +163,6 @@ Documento:
 Historial:
 {formatted_history}
 
-
 Usuario:
 {message}
 """
