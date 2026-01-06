@@ -44,8 +44,8 @@ export const documentsAPI = {
   },
   list: async (userId: string) => {
     try {
-      const response = await apiClient.get(`/documents/${userId}`);
-      return response.data || [];
+      const response = await apiClient.get(`/documents?user_id=${userId}`);
+      return response.data.documents || [];
     } catch (error: any) {
       return [];
     }

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { documentsAPI, chatAPI } from '@/src/services/api';
 
 export interface Document {
@@ -21,6 +21,23 @@ export const useDocumentsAndChat = (userId: string, documentId?: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  
+  const loadDocuments = useCallback(async () => {
+    setLoading(true);
+    try {
+      const docs = await documentsAPI.list(userId);
+      setDocuments(docs);
+    } catch (err) {
+      setError('Error cargando documentos');
+    } finally {
+      setLoading(false);
+    }
+  }, [userId]);
+  
+    useEffect(() => {
+    loadDocuments();
+  }, [userId, loadDocuments]);
 
   const uploadDocument = useCallback(
     async (fileUri: string, fileName: string) => {
