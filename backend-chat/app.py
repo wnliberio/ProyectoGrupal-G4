@@ -116,13 +116,18 @@ async def upload_document(user_id: str, file: UploadFile = File(...)):
     document_id = str(uuid4())
     
     # Guardar documento en MongoDB
-    mongo["rag_db"]["documents"].insert_one({
-        "user_id": user_id,
-        "document_id": document_id,
-        "file_name": file.filename,
-        "content": text,
-        "uploaded_at": datetime.utcnow()
-    })
+    try:
+        result = mongo["rag_db"]["documents"].insert_one({
+            "user_id": user_id,
+            "document_id": document_id,
+            "file_name": file.filename,
+            "content": text,
+            "uploaded_at": datetime.utcnow()
+        })
+        print(f"✓ Document inserted: {result.inserted_id}")
+    except Exception as e:
+        print(f"✗ ERROR inserting document: {e}")
+        raise
     
     ensure_first_message(user_id, document_id)
     
