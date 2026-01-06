@@ -24,7 +24,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 # ======================
 load_dotenv()
 
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
+MONGO_URI = os.getenv("MONGO_URI") or "mongodb://mongo:27017"
 API_KEY = os.getenv("GOOGLE_API_KEY")
 CHROMA_PATH = "./data/chroma"
 
