@@ -23,7 +23,7 @@ jobs:
           cd /home/ubuntu && rm -rf ProyectoGrupal-G4
           git clone --depth 1 https://github.com/wnliberio/ProyectoGrupal-G4.git
           cd ProyectoGrupal-G4
-          cat > backend-chat/.env << 'EOF'
+          cat > backend-chat/.env << EOF
           $ENV_FILE
           EOF
           docker-compose down
