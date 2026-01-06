@@ -115,6 +115,7 @@ async def upload_document(user_id: str, file: UploadFile = File(...)):
     
     document_id = str(uuid4())
     
+    
     # Guardar documento en MongoDB
     try:
         result = mongo["rag_db"]["documents"].insert_one({
