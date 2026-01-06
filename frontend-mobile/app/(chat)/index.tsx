@@ -14,7 +14,7 @@ import { useAuth } from '@/src/contexts/AuthContext';
 import { useDocumentsAndChat } from '@/src/hooks/useDocumentsAndChat';
 import { Colors } from '@/constants/Colors';
 import { File } from 'expo-file-system';
-import * as DocumentPicker from 'expo-document-picker';
+import * as DocumentPicker from 'expo-document-picker'; // para traer el nombre del documneto
 
 export default function DocumentsScreen() {
   const router = useRouter();
