@@ -6,10 +6,11 @@ const ENV = Constants.expoConfig?.extra?.ENV || 'dev';
 
 
 const BACKEND_URLS: Record<string, string> = {
-  dev: 'http://54.210.242.221:8000',
-  prod: 'http://54.174.130.226:8000',
+  dev: 'http://54.161.26.130:8000',
+  prod: 'http://54.221.47.189:8000',
 };
 const BACKEND_URL = BACKEND_URLS[ENV];
+
 
 const apiClient = axios.create({
   baseURL: BACKEND_URL,
@@ -43,8 +44,8 @@ export const documentsAPI = {
   },
   list: async (userId: string) => {
     try {
-      const response = await apiClient.get(`/documents/${userId}`);
-      return response.data || [];
+      const response = await apiClient.get(`/documents?user_id=${userId}`);
+      return response.data.documents || [];
     } catch (error: any) {
       return [];
     }
@@ -62,6 +63,7 @@ export const documentsAPI = {
     }
   },
 };
+
 
 export const chatAPI = {
   send: async (userId: string, documentId: string, message: string) => {

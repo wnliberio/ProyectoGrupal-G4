@@ -14,6 +14,7 @@ import { useAuth } from '@/src/contexts/AuthContext';
 import { useDocumentsAndChat } from '@/src/hooks/useDocumentsAndChat';
 import { Colors } from '@/constants/Colors';
 import { File } from 'expo-file-system';
+import * as DocumentPicker from 'expo-document-picker'; // para traer el nombre del documneto
 
 export default function DocumentsScreen() {
   const router = useRouter();
@@ -30,11 +31,17 @@ export default function DocumentsScreen() {
 
 const handlePickDocument = async () => {
   try {
-    const file = await File.pickFileAsync();
-    if (file) {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: 'application/pdf',
+    });
+    
+    if (!result.canceled && result.assets && result.assets.length > 0) {
+      const file = result.assets[0];
+      const fileName = file.name || 'documento.pdf';
+      
       setUploading(true);
       try {
-        const newDoc = await uploadDocument(file.uri, file.name);
+        const newDoc = await uploadDocument(file.uri, fileName);
         Alert.alert('Exito', 'Documento subido correctamente');
       } catch (err) {
         Alert.alert('Error', 'No se pudo subir el documento');
