@@ -1,3 +1,4 @@
+from urllib.parse import unquote
 from fastapi import FastAPI, UploadFile, File
 from pymongo import MongoClient
 from uuid import uuid4
@@ -114,6 +115,34 @@ def ensure_first_message(user_id, document_id):
 async def upload_document(user_id: str, file: UploadFile = File(...)):
     text = extract_text(file)
     
+    @app.post("/documents/upload")
+async def upload_document(user_id: str, file: UploadFile = File(...)):
+    text = extract_text(file)
+    
+    document_id = str(uuid4())
+    file_name = unquote(file.filename)  # Decodifica "document%3A66660" → "document.pdf"
+    
+    # Guardar documento en MongoDB
+    try:
+        result = mongo["rag_db"]["documents"].insert_one({
+            "user_id": user_id,
+            "document_id": document_id,
+            "file_name": file_name,  # Usa el decodificado
+            "content": text,
+            "uploaded_at": datetime.utcnow()
+        })
+        print(f"✓ Document inserted: {result.inserted_id}")
+    except Exception as e:
+        print(f"✗ ERROR inserting document: {e}")
+        raise
+    
+    ensure_first_message(user_id, document_id)
+    
+    return {
+        "document_id": document_id,
+        "file_name": file_name  # Devuelve el decodificado
+    }
+    
     document_id = str(uuid4())
     
     
@@ -150,7 +179,7 @@ async def chat(req: ChatRequest):
 
     ensure_first_message(user_id, document_id)
 
-    # Recuperar documento
+    # VA a MongoDB y recupera el PDF
     doc = mongo["rag_db"]["documents"].find_one({
         "user_id": user_id,
         "document_id": document_id
@@ -158,20 +187,21 @@ async def chat(req: ChatRequest):
     
     document_content = doc["content"] if doc else "No se encontró el documento"
 
+    # VA a MongoDB y recupera el historial
     history = get_history(user_id, document_id)
     formatted_history = "\n".join(f"{m['role']}: {m['content']}" for m in history)
 
     prompt = f"""
-{PROMPT_INICIAL}
+{PROMPT_INICIAL} # Instrucción: "Eres Cliofer, etc etc
 
 Documento:
-{document_content}
+{document_content} # TODO el contenido del PDF (texto completo)
 
 Historial:
-{formatted_history}
+{formatted_history}  # Conversación anterior: "user: hola" "asistente: hola etc etc
 
 Usuario:
-{message}
+{message}  # La pregunta nueva del usuario
 """
 
     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3, google_api_key=API_KEY)
