@@ -116,32 +116,32 @@ async def upload_document(user_id: str, file: UploadFile = File(...)):
     text = extract_text(file)
     
     @app.post("/documents/upload")
-async def upload_document(user_id: str, file: UploadFile = File(...)):
-    text = extract_text(file)
-    
-    document_id = str(uuid4())
-    file_name = unquote(file.filename)  # Decodifica "document%3A66660" → "document.pdf"
-    
-    # Guardar documento en MongoDB
-    try:
-        result = mongo["rag_db"]["documents"].insert_one({
-            "user_id": user_id,
+    async def upload_document(user_id: str, file: UploadFile = File(...)):
+        text = extract_text(file)
+        
+        document_id = str(uuid4())
+        file_name = unquote(file.filename)  # Decodifica "document%3A66660" → "document.pdf"
+        
+        # Guardar documento en MongoDB
+        try:
+            result = mongo["rag_db"]["documents"].insert_one({
+                "user_id": user_id,
+                "document_id": document_id,
+                "file_name": file_name,  # Usa el decodificado
+                "content": text,
+                "uploaded_at": datetime.utcnow()
+            })
+            print(f"✓ Document inserted: {result.inserted_id}")
+        except Exception as e:
+            print(f"✗ ERROR inserting document: {e}")
+            raise
+        
+        ensure_first_message(user_id, document_id)
+        
+        return {
             "document_id": document_id,
-            "file_name": file_name,  # Usa el decodificado
-            "content": text,
-            "uploaded_at": datetime.utcnow()
-        })
-        print(f"✓ Document inserted: {result.inserted_id}")
-    except Exception as e:
-        print(f"✗ ERROR inserting document: {e}")
-        raise
-    
-    ensure_first_message(user_id, document_id)
-    
-    return {
-        "document_id": document_id,
-        "file_name": file_name  # Devuelve el decodificado
-    }
+            "file_name": file_name  # Devuelve el decodificado
+        }
     
     document_id = str(uuid4())
     
