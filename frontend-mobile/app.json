@@ -40,7 +40,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "ENV": "dev"
+      "ENV": "prod"
     }
   }
 }
