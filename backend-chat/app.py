@@ -139,6 +139,7 @@ async def upload_document(user_id: str, file: UploadFile = File(...)):
         "file_name": file_name  # Devuelve el decodificado
     }
     
+    
 @app.get("/documents")
 async def get_documents(user_id: str):
     docs = list(mongo["rag_db"]["documents"].find(
