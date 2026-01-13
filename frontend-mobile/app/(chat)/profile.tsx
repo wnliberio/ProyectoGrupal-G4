@@ -1,6 +1,5 @@
-// 📁 DIRECTORIO: app/(chat)/profile.tsx
-// 📄 ARCHIVO: profile.tsx
-// 🔧 VERSIÓN CORREGIDA: Logout funcional
+// ARCHIVO: profile.tsx
+// VERSIÓN CORREGIDA: Logout funcional
 
 import React from 'react';
 import {
@@ -30,7 +29,7 @@ export default function ProfileScreen() {
   // FUNCIÓN: Cerrar Sesión
   // ═══════════════════════════════════════════════════════════════════════
   const handleLogout = async (): Promise<void> => {
-    console.log('👋 handleLogout iniciado');
+    console.log('handleLogout iniciado');
     
     Alert.alert(
       'Cerrar Sesión',
@@ -39,7 +38,7 @@ export default function ProfileScreen() {
         {
           text: 'Cancelar',
           onPress: () => {
-            console.log('❌ Logout cancelado');
+            console.log('Logout cancelado');
           },
           style: 'cancel',
         },
@@ -47,18 +46,18 @@ export default function ProfileScreen() {
           text: 'Cerrar Sesión',
           onPress: async () => {
             try {
-              console.log('🔄 Ejecutando logout...');
+              console.log('Ejecutando logout...');
               
               // Ejecutar logout
               await logout();
               
-              console.log('✅ Logout exitoso');
+              console.log('Logout exitoso');
               
               // Redirigir a login
               router.replace('/(auth)/login');
               
             } catch (error) {
-              console.error('❌ Error en logout:', error);
+              console.error('Error en logout:', error);
               Alert.alert('Error', 'No se pudo cerrar sesión');
             }
           },
@@ -81,7 +80,7 @@ export default function ProfileScreen() {
         {
           text: 'Cancelar',
           onPress: () => {
-            console.log('❌ Eliminación cancelada');
+            console.log('Eliminación cancelada');
           },
           style: 'cancel',
         },
@@ -89,18 +88,18 @@ export default function ProfileScreen() {
           text: 'Eliminar',
           onPress: async () => {
             try {
-              console.log('🔄 Eliminando cuenta...');
+              console.log('Eliminando cuenta...');
               
               // Ejecutar logout
               await logout();
               
-              console.log('✅ Cuenta eliminada');
+              console.log('Cuenta eliminada');
               
               // Redirigir a login
               router.replace('/(auth)/login');
               
             } catch (error) {
-              console.error('❌ Error al eliminar:', error);
+              console.error('Error al eliminar:', error);
               Alert.alert('Error', 'No se pudo eliminar la cuenta');
             }
           },
