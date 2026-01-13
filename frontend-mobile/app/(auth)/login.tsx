@@ -1,3 +1,9 @@
+//login.tsx
+/* Implementa la pantalla de inicio de sesión simple. 
+     Muestra un formulario para ingresar email o nombre, valida que no esté vacío, 
+      ejecuta login del contexto de autenticación y luego redirige al chat. 
+        También adapta colores al tema claro/oscuro y define estilos de UI.*/
+
 import React, { useState } from 'react';
 import {
   View,
@@ -7,46 +13,46 @@ import {
   StyleSheet,
   useColorScheme,
 } from 'react-native';
-import { useRouter } from 'expo-router';
-import { useAuth } from '@/src/contexts/AuthContext';
-import { Colors } from '@/constants/Colors';
+import { useRouter } from 'expo-router'; //Permite navegar entre pantallas con el router.
+import { useAuth } from '@/src/contexts/AuthContext'; //Hook de autenticación para ejecutar login
+import { Colors } from '@/constants/Colors'; //Colores para tema claro/oscuro.
 
-export default function LoginScreen() {
-  const router = useRouter();
-  const { login } = useAuth();
-  const [email, setEmail] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const colorScheme = useColorScheme();
-  const isDark = colorScheme === 'dark';
-  const colors = isDark ? Colors.dark : Colors.light;
+export default function LoginScreen() {   //Declara el componente de la pantalla de login
+  const router = useRouter();             //Declara el componente de la pantalla de login
+  const { login } = useAuth();             //Obtiene la función login del contexto de auth.
+  const [email, setEmail] = useState('');   //Estado para guardar lo que escribe el usuario (email o nombre).
+  const [isLoading, setIsLoading] = useState(false);   //Estado para indicar si está cargando el login
+  const colorScheme = useColorScheme();   //Obtiene el tema del dispositivo (dark/light).
+  const isDark = colorScheme === 'dark';  //Determina si el tema actual es oscuro
+  const colors = isDark ? Colors.dark : Colors.light;  //Selecciona paleta de colores según tema.
 
-  const handleContinue = async () => {
+  const handleContinue = async () => {     //Define la función al presionar “Continuar”.
     if (!email.trim()) {
-      alert('Ingresa un email o nombre');
+      alert('Ingresa un email o nombre');  //Si el campo está vacío, muestra alert y sale de la función.
       return;
     }
 
-    setIsLoading(true);
+    setIsLoading(true);  //Activa el estado de carga
     try {
-      await login(email, 'dummy');
-      router.replace('/(chat)/index');
+      await login(email, 'dummy');  //Ejecuta login(email,'dummy');usa contraseña dummy porque es solo testing
+      router.replace('/(chat)/index');  //Navega al chat principal después del login.
     } catch (error) {
-      alert('Error al continuar');
+      alert('Error al continuar');  //Si falla el login, muestra un alert de error
     } finally {
-      setIsLoading(false);
+      setIsLoading(false);  //En cualquier caso, desactiva el estado de carga.
     }
   };
 
-  return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.text }]}>Chat PDF</Text>
+  return (     //Inicia el render del JSX
+    <View style={[styles.container, { backgroundColor: colors.background }]}>  {/* Contenedor principal con color de fondo según tema*/}
+      <View style={styles.content}>                                            {/*Contenedor interno para el contenido centrado*/}
+        <Text style={[styles.title, { color: colors.text }]}>Chat PDF</Text>   {/*Título y subtítulo del login (nombre y descripción)*/}
         <Text style={[styles.subtitle, { color: colors.muted }]}>
           Chatea con tus documentos
         </Text>
 
-        <View style={styles.form}>
-          <Text style={[styles.label, { color: colors.text }]}>Email o nombre</Text>
+        <View style={styles.form}>                    {/*Contenedor del formulario.*/}
+          <Text style={[styles.label, { color: colors.text }]}>Email o nombre</Text>   {/*Etiqueta del campo*/}
           <TextInput
             style={[
               styles.input,
