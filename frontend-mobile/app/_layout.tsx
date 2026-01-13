@@ -1,6 +1,5 @@
-// 📁 DIRECTORIO: app/_layout.tsx
-// 📄 ARCHIVO: _layout.tsx
-// 🔧 CORRECCIÓN: AuthProvider wrapper + Stack Navigation correcta
+// _layout.tsx
+//AuthProvider wrapper + Stack Navigation correcta
 
 import { Stack } from 'expo-router';
 import { AuthProvider } from '@/src/contexts/AuthContext';
