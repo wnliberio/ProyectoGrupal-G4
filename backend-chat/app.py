@@ -193,6 +193,7 @@ Usuario:
     llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash", temperature=0.3, google_api_key=API_KEY)
     answer = llm.invoke(prompt).content
 
+
     save_message(user_id, document_id, "user", message)
     save_message(user_id, document_id, "assistant", answer)
 
