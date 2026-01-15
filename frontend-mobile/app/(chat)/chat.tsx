@@ -1,3 +1,10 @@
+// chat.tsx
+/*Muestra el header con el nombre del documento y el botón de volver.
+   Renderiza mensajes, estado de carga y errores.
+     Permite escribir y enviar mensajes.
+       Toda la lógica de mensajería usa useDocumentsAndChat y mantiene el envío/lectura de mensajes 
+       intacto.
+*/
 import React, { useState } from 'react';
 import {
   View,
