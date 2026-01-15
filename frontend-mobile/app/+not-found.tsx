@@ -1,4 +1,9 @@
-
+/*Pantalla de “ruta no encontrada”:
+   Configura el título “Oops!” para la pantalla.
+     Muestra un mensaje indicando que la pantalla no existe.
+       Incluye un link para volver a la pantalla principal.
+         Maneja rutas inválidas y ofrece retorno al inicio.
+*/
 import { StyleSheet } from 'react-native';
 import { Link, Stack } from 'expo-router';
 import { View, Text } from 'react-native';
