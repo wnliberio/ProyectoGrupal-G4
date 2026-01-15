@@ -119,15 +119,7 @@ export default function TrashScreen() {
           },
         ]}
       >
-        <TouchableOpacity onPress={() => router.back()}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: colors.text }]}>
-          Papelera
-        </Text>
-        <Text style={[styles.headerCount, { color: colors.muted }]}>
-          {deletedChats.length}
-        </Text>
+        <Text style={[styles.headerTitle, { color: colors.text }]}>Papelera</Text>
       </View>
 
       {/* Content */}
@@ -163,15 +155,15 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
+    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
   },
   headerTitle: {
-    flex: 1,
     fontSize: 18,
     fontWeight: '600',
+    textAlign: 'center',
   },
   headerCount: {
     fontSize: 14,

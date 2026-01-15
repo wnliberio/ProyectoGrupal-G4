@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ArrowLeft, LogOut, Trash2 } from 'lucide-react-native';
+import { LogOut, Trash2 } from 'lucide-react-native';
 import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/src/contexts/AuthContext';
 
@@ -129,11 +129,7 @@ export default function ProfileScreen() {
           { borderBottomColor: colors.border, paddingTop: insets.top },
         ]}
       >
-        <TouchableOpacity onPress={() => router.back()}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Perfil</Text>
-        <View style={{ width: 24 }} />
       </View>
 
       <ScrollView
@@ -247,7 +243,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
