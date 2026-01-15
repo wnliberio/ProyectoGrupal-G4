@@ -6,3 +6,5 @@ envM/
 __pycache__/
 data
 venv
+envpdf/
+envpdf
