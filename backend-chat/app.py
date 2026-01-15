@@ -112,6 +112,7 @@ def ensure_first_message(user_id, document_id):
 # ROUTES
 # ======================
 
+
 @app.post("/documents/upload")
 async def upload_document(user_id: str, file: UploadFile = File(...)):
     """Sube documento y lo guarda en MongoDB + Chroma (RAG)"""
