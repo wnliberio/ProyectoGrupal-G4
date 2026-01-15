@@ -1,5 +1,6 @@
-// 📁 CARPETA: src/hooks/
-// 📄 ARCHIVO: useFetchWithAuth.ts
+/*Hook helper para hacer fetch con token almacenado en AsyncStorage. 
+    Maneja expiración (401) y hace logout si es necesario.
+*/
 
 import { useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -14,12 +15,12 @@ export const useFetchWithAuth = () => {
         const token = await AsyncStorage.getItem('authToken');
 
         if (!token) {
-          console.warn('❌ No hay token disponible');
+          console.warn('No hay token disponible');
           await logout();
           throw new Error('No hay sesión activa');
         }
 
-        console.log('🔐 Token encontrado, haciendo request a:', url);
+        console.log('Token encontrado, haciendo request a:', url);
 
         const response = await fetch(url, {
           ...options,
@@ -30,27 +31,27 @@ export const useFetchWithAuth = () => {
           }
         });
 
-        console.log('📡 Respuesta recibida:', response.status);
+        console.log('Respuesta recibida:', response.status);
 
-        // ❌ ERROR 401 = Token expirado o inválido
+        // ERROR 401 = Token expirado o inválido
         if (response.status === 401) {
-          console.warn('⚠️  Sesión expirada (Error 401)');
+          console.warn('Sesión expirada (Error 401)');
           await logout();
           throw new Error('Sesión expirada. Por favor, inicia sesión nuevamente.');
         }
 
-        // ❌ Otros errores
+        // Otros errores
         if (!response.ok) {
           const errorData = await response.json().catch(() => ({}));
           throw new Error(errorData.error || `Error ${response.status}`);
         }
 
-        // ✅ Éxito
-        console.log('✅ Request exitoso');
+        // Éxito
+        console.log('Request exitoso');
         return response;
 
       } catch (error) {
-        console.error('❌ Error en fetchWithAuth:', error);
+        console.error('Error en fetchWithAuth:', error);
         throw error;
       }
     },
