@@ -1,17 +1,15 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-
+from fastembed import TextEmbedding
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
+from langchain_core.embeddings.embeddings import Embeddings
 import os
 
 
-from fastembed.embedding import FlagEmbedding
-from langchain_core.embeddings.embeddings import Embeddings
-
 class FastEmbedWrapper(Embeddings):
-    """Wrapper de FastEmbed para compatible con Chroma"""
+    """Wrapper de FastEmbed compatible con Chroma"""
     def __init__(self):
-        self.model = FlagEmbedding(
+        self.model = TextEmbedding(
             model_name="BAAI/bge-small-en-v1.5",
             cache_folder="/data/embeddings"
         )
@@ -22,12 +20,11 @@ class FastEmbedWrapper(Embeddings):
     def embed_query(self, text):
         return list(self.model.embed([text])[0])
 
+
 class RAGService:
     def __init__(self):
-        """Inicializa RAG con Chroma + HuggingFace Embeddings (gratis, sin límites)"""
-        self.embeddings = FastEmbedWrapper(
-            model_name="sentence-transformers/all-MiniLM-L6-v2"
-        )
+        """Inicializa RAG con Chroma + FastEmbed (ligero, sin CUDA)"""
+        self.embeddings = FastEmbedWrapper()
         self.splitter = RecursiveCharacterTextSplitter(
             chunk_size=500,
             chunk_overlap=100,
@@ -60,9 +57,8 @@ class RAGService:
         return len(documents)
     
     def search(self, query: str, k: int = 5):
-        """Busca chunks por SIMILITUD PURA"""
+        """Busca chunks relevantes por similitud pura"""
         try:
-            # Similarity search = chunks MÁS RELEVANTES
             results = self.vector_store.similarity_search(query, k=k)
             return results
         except Exception as e:
