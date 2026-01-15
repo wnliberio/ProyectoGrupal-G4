@@ -23,3 +23,5 @@ build/
 # Data
 data/
 *.db
+envpdf/
+envpdf
