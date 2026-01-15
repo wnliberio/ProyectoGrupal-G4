@@ -1,13 +1,31 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings  
+
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 import os
 
+
+from fastembed.embedding import FlagEmbedding
+from langchain_core.embeddings.embeddings import Embeddings
+
+class FastEmbedWrapper(Embeddings):
+    """Wrapper de FastEmbed para compatible con Chroma"""
+    def __init__(self):
+        self.model = FlagEmbedding(
+            model_name="BAAI/bge-small-en-v1.5",
+            cache_folder="/data/embeddings"
+        )
+    
+    def embed_documents(self, texts):
+        return [list(embedding) for embedding in self.model.embed(texts)]
+    
+    def embed_query(self, text):
+        return list(self.model.embed([text])[0])
+
 class RAGService:
     def __init__(self):
         """Inicializa RAG con Chroma + HuggingFace Embeddings (gratis, sin límites)"""
-        self.embeddings = HuggingFaceEmbeddings(
+        self.embeddings = FastEmbedWrapper(
             model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
         self.splitter = RecursiveCharacterTextSplitter(
