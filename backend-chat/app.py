@@ -199,8 +199,9 @@ Si no esta en los documentos, dilo sin ser robotico."""
         
         return {"answer": answer}
     
+    #
     except Exception as e:
-        print(f"Error en el chat: {e}")
+        print(f"Error en chat: {e}")
         raise HTTPException(status_code=400, detail=str(e))
 
 
