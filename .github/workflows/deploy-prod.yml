@@ -20,6 +20,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "cd /home/ubuntu && rm -rf ProyectoGrupal-G4 && git clone --depth 1 -b main https://github.com/wnliberio/ProyectoGrupal-G4.git && cd ProyectoGrupal-G4 && cat > .env << EOF
           GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           MONGO_URI=${{ secrets.MONGO_URI }}
           EOF
           docker-compose down && docker system prune -a -f && docker-compose up -d --build"

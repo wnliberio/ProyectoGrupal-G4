@@ -1,35 +1,26 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from fastembed import TextEmbedding
+from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
-from langchain_core.embeddings.embeddings import Embeddings
 import os
-
-
-class FastEmbedWrapper(Embeddings):
-    """Wrapper de FastEmbed compatible con Chroma"""
-    def __init__(self):
-        self.model = TextEmbedding(
-            model_name="BAAI/bge-small-en-v1.5",
-            cache_folder="/data/embeddings"
-        )
-    
-    def embed_documents(self, texts):
-        return [list(embedding) for embedding in self.model.embed(texts)]
-    
-    def embed_query(self, text):
-        return list(self.model.embed([text])[0])
 
 
 class RAGService:
     def __init__(self):
-        """Inicializa RAG con Chroma + FastEmbed (ligero, sin CUDA)"""
-        self.embeddings = FastEmbedWrapper()
+        # Inicializa OpenAI embeddings y Chroma vector store
+        self.embeddings = OpenAIEmbeddings(
+            model="text-embedding-3-small",
+            api_key=os.getenv("OPENAI_API_KEY")
+        )
+        
+        # Configura el splitter para fragmentar documentos
         self.splitter = RecursiveCharacterTextSplitter(
             chunk_size=500,
             chunk_overlap=100,
             separators=["\n\n", "\n", " ", ""]
         )
+        
+        # Inicializa Chroma para almacenar vectores
         self.vector_store = Chroma(
             collection_name="documents",
             embedding_function=self.embeddings,
@@ -37,7 +28,7 @@ class RAGService:
         )
     
     def add_document(self, text: str, document_id: str, filename: str):
-        """Chunka documento y lo guarda en Chroma con metadatos"""
+        # Divide el texto en chunks y los guarda con metadatos
         chunks = self.splitter.split_text(text)
         
         documents = []
@@ -57,10 +48,10 @@ class RAGService:
         return len(documents)
     
     def search(self, query: str, k: int = 5):
-        """Busca chunks relevantes por similitud pura"""
+        # Busca los chunks mas relevantes basado en similitud
         try:
             results = self.vector_store.similarity_search(query, k=k)
             return results
         except Exception as e:
-            print(f"Error en búsqueda RAG: {e}")
+            print(f"Error buscando en el vector store: {e}")
             return []
