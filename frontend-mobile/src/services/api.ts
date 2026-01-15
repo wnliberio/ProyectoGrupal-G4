@@ -6,8 +6,8 @@ const ENV = Constants.expoConfig?.extra?.ENV || 'dev';
 
 
 const BACKEND_URLS: Record<string, string> = {
-  dev: 'http://3.231.235.221:8000',
-  prod: 'http://34.224.16.87:8000',
+  dev: 'http://ec2-3-231-235-221.compute-1.amazonaws.com:8000',
+  prod: 'http://ec2-34-224-16-87.compute-1.amazonaws.com:8000',
 };
 const BACKEND_URL = BACKEND_URLS[ENV];
 
