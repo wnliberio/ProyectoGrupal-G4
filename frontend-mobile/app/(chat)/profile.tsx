@@ -1,5 +1,8 @@
-// ARCHIVO: profile.tsx
-// VERSIÓN CORREGIDA: Logout funcional
+/*Muestra avatar con inicial, nombre y email.
+   Ofrece acciones de cerrar sesión y eliminar cuenta (ambas usan logout).
+    Usa useSafeAreaInsets y estilos para layout.
+     Incluye mensajes de confirmación y navegación de regreso a login.
+*/
 
 import React from 'react';
 import {
