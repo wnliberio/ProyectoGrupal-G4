@@ -1,6 +1,6 @@
-// 📁 DIRECTORIO: src/hooks/useChats.ts
-// 📄 ARCHIVO: useChats.ts
-// 🔧 VERSIÓN CORREGIDA: Tipado mejorado y gestión de estado segura
+/*Hook que maneja el estado de chats en memoria (mock). Permite agregar, eliminar, 
+    restaurar y borrar permanentemente, además de manejar mensajes y selección de chat.
+*/
 
 import { useState, useCallback, useMemo } from 'react';
 import { Chat, Message, DeletedChat } from '../types';
