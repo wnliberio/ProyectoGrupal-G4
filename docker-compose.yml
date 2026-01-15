@@ -28,6 +28,7 @@ services:
     environment:
       GOOGLE_API_KEY: ${GOOGLE_API_KEY}
       MONGO_URI: ${MONGO_URI}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
       DATABASE_NAME: ai_docs_dev
       ENV: development
     volumes:
