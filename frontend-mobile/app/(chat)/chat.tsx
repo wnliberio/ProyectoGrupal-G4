@@ -8,8 +8,6 @@ import {
   StyleSheet,
   useColorScheme,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '@/src/contexts/AuthContext';
@@ -44,25 +42,26 @@ export default function ChatScreen() {
   };
 
   return (
-    <ScreenContainer>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={[styles.container, { backgroundColor: colors.background }]}
-        keyboardVerticalOffset={100}
-      >
+    <ScreenContainer withKeyboard>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        
+        {/* HEADER */}
         <View style={[styles.header, { borderBottomColor: colors.border }]}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Text style={{ color: '#a855f7', fontSize: 16 }}>Atras</Text>
+            <Text style={{ color: '#a855f7', fontSize: 16 }}>Atrás</Text>
           </TouchableOpacity>
+
           <Text
             style={[styles.headerTitle, { color: colors.text }]}
             numberOfLines={1}
           >
             {documentName || 'Chat'}
           </Text>
+
           <View style={{ width: 50 }} />
         </View>
 
+        {/* ERROR */}
         {error && (
           <View
             style={[
@@ -70,13 +69,17 @@ export default function ChatScreen() {
               { backgroundColor: '#fee2e2', borderColor: '#fca5a5' },
             ]}
           >
-            <Text style={{ color: '#991b1b', fontSize: 12 }}>{error}</Text>
+            <Text style={{ color: '#991b1b', fontSize: 12 }}>
+              {error}
+            </Text>
           </View>
         )}
 
+        {/* MENSAJES */}
         <ScrollView
           style={styles.messagesContainer}
           contentContainerStyle={styles.messagesContent}
+          keyboardShouldPersistTaps="handled"
         >
           {messages.length === 0 ? (
             <View style={styles.emptyMessages}>
@@ -121,17 +124,21 @@ export default function ChatScreen() {
           {loading && (
             <View style={styles.loadingMessage}>
               <ActivityIndicator color={colors.text} />
-              <Text style={[styles.loadingText, { color: colors.muted }]}> 
+              <Text style={[styles.loadingText, { color: colors.muted }]}>
                 Generando respuesta...
               </Text>
             </View>
           )}
         </ScrollView>
 
+        {/* INPUT */}
         <View
           style={[
             styles.inputContainer,
-            { borderTopColor: colors.border, backgroundColor: colors.background },
+            {
+              borderTopColor: colors.border,
+              backgroundColor: colors.background,
+            },
           ]}
         >
           <TextInput
@@ -150,10 +157,12 @@ export default function ChatScreen() {
             editable={!loading}
             multiline
           />
+
           <TouchableOpacity
             style={[
               styles.sendButton,
-              (loading || !messageText.trim()) && styles.sendButtonDisabled,
+              (loading || !messageText.trim()) &&
+                styles.sendButtonDisabled,
             ]}
             onPress={handleSendMessage}
             disabled={loading || !messageText.trim()}
@@ -161,7 +170,7 @@ export default function ChatScreen() {
             <Text style={styles.sendButtonText}>Enviar</Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </ScreenContainer>
   );
 }
