@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ArrowLeft, LogOut, Trash2 } from 'lucide-react-native';
+import { LogOut, Trash2 } from 'lucide-react-native';
 import { Colors } from '@/constants/Colors';
 import { useAuth } from '@/src/contexts/AuthContext';
 
@@ -113,6 +113,13 @@ export default function ProfileScreen() {
   const userEmail = user?.email || 'email@example.com';
   const userName = user?.name || 'Usuario';
 
+  const capitalizeFirst = (s: string) => {
+    if (!s) return s;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
+
+  const displayName = capitalizeFirst(userName);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
@@ -122,11 +129,7 @@ export default function ProfileScreen() {
           { borderBottomColor: colors.border, paddingTop: insets.top },
         ]}
       >
-        <TouchableOpacity onPress={() => router.back()}>
-          <ArrowLeft size={24} color={colors.text} />
-        </TouchableOpacity>
         <Text style={[styles.headerTitle, { color: colors.text }]}>Perfil</Text>
-        <View style={{ width: 24 }} />
       </View>
 
       <ScrollView
@@ -141,11 +144,11 @@ export default function ProfileScreen() {
         <View style={styles.avatarSection}>
           <View style={[styles.avatar, { backgroundColor: '#a855f7' }]}>
             <Text style={styles.avatarText}>
-              {userName.charAt(0).toUpperCase()}
+              {displayName.charAt(0).toUpperCase()}
             </Text>
           </View>
           <Text style={[styles.userName, { color: colors.text }]}>
-            {userName}
+            {displayName}
           </Text>
           <Text style={[styles.userEmail, { color: colors.muted }]}>
             {userEmail}
@@ -185,7 +188,7 @@ export default function ProfileScreen() {
                 Nombre
               </Text>
               <Text style={[styles.settingValue, { color: colors.muted }]}>
-                {userName}
+                {displayName}
               </Text>
             </View>
           </TouchableOpacity>
@@ -240,7 +243,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderBottomWidth: 1,
