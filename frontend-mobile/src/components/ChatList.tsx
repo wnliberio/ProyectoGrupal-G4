@@ -1,6 +1,7 @@
-// 📁 DIRECTORIO: src/components/ChatList.tsx
-// 📄 ARCHIVO: ChatList.tsx
-// 🔧 VERSIÓN: COMPLETA + DocumentPicker (SIN romper nada existente)
+/*Componente UI que muestra la lista de documentos/chats, permite subir documentos (DocumentPicker),
+     abrir un chat, borrar chats y acceder a perfil o papelera. 
+         Maneja iconos por tipo de archivo, formatea fechas, y renderiza estados vacíos.
+*/
 
 import React, { useState, useMemo } from 'react';
 import {
@@ -25,7 +26,7 @@ interface ChatListProps {
   onShowProfile: () => void;
   onShowTrash: () => void;
 
-  // 🔥 CAMBIO: ahora recibe nombre + uri reales
+  // CAMBIO: ahora recibe nombre + uri reales
   onNewChat: (fileName: string, fileUri: string) => void;
 }
 
@@ -88,7 +89,7 @@ export function ChatList({
   };
 
   // ===============================
-  // ✅ SOLUCIÓN REAL (NO ROMPE NADA)
+  // SOLUCIÓN REAL (NO ROMPE NADA)
   // ===============================
   const handleNewChat = async (): Promise<void> => {
     try {
@@ -101,8 +102,8 @@ export function ChatList({
 
       const file = result.assets[0];
 
-      const fileName = file.name; // ✅ nombre real
-      const fileUri = file.uri;   // ✅ uri real
+      const fileName = file.name; // nombre real
+      const fileUri = file.uri;   // uri real
 
       onNewChat(fileName, fileUri);
     } catch (error) {
