@@ -1,3 +1,6 @@
+/*Hook que maneja documentos reales vía API: carga documentos, sube PDF, selecciona documento 
+    y envía mensajes al backend.Administra loading, error y el estado de mensajes.
+*/
 import { useState, useCallback, useEffect } from 'react';
 import { documentsAPI, chatAPI } from '@/src/services/api';
 
