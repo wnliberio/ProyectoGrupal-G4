@@ -1,6 +1,6 @@
-// 📁 DIRECTORIO: src/components/Login.tsx
-// 📄 ARCHIVO: Login.tsx
-// 🔧 VERSIÓN CORREGIDA: Errores de casteo Boolean a String eliminados
+/*Componente visual de login (formulario con email/contraseña). Valida campos, muestra estados de carga, 
+    y llama a onLogin cuando se presiona el botón. Incluye estilos y UI de “modo prototipo”
+*/
 
 import React, { useState } from 'react';
 import {
