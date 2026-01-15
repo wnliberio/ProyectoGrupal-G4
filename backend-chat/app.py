@@ -180,6 +180,7 @@ async def chat(req: ChatRequest):
     prompt = f"""
 {PROMPT_INICIAL} # Instrucción: "Eres Cliofer, etc etc
 
+
 Documento:
 {document_content} # TODO el contenido del PDF (texto completo)
 
