@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Platform } from 'react-native';
 import {
   View,
   Text,
@@ -23,6 +24,7 @@ export default function DocumentsScreen() {
   const colors = isDark ? Colors.dark : Colors.light;
   const { user } = useAuth();
   const [uploading, setUploading] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<any | null>(null);
 
   const [bannerMessage, setBannerMessage] = useState<string | null>(null);
   const opacity = useRef(new Animated.Value(0)).current;
@@ -52,26 +54,49 @@ export default function DocumentsScreen() {
   const { documents, loading, error, uploadDocument, selectDocument } =
     useDocumentsAndChat(userId);
 
+  // Selecciona archivo PDF en móvil, input en web
   const handlePickDocument = async () => {
+    if (Platform.OS === 'web') return;
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: 'application/pdf',
       });
-
       if (!result.canceled && result.assets?.length) {
-        const file = result.assets[0];
-        setUploading(true);
-
-        try {
-          await uploadDocument(file.uri, file.name || 'documento.pdf');
-        } catch {
-          showBanner('No se pudo subir el documento');
-        } finally {
-          setUploading(false);
-        }
+        setSelectedFile(result.assets[0]);
+      } else {
+        setSelectedFile(null);
       }
     } catch {
       showBanner('Error seleccionando archivo');
+    }
+  };
+
+  // Handler para input web
+  const handleWebInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === 'application/pdf') {
+      setSelectedFile({
+        uri: URL.createObjectURL(file),
+        name: file.name,
+        fileObject: file,
+      });
+    } else {
+      setSelectedFile(null);
+      showBanner('Solo se permite PDF');
+    }
+  };
+
+  // Sube el archivo seleccionado al API
+  const handleUploadDocument = async () => {
+    if (!selectedFile) return;
+    setUploading(true);
+    try {
+      await uploadDocument(selectedFile.uri, selectedFile.name || 'documento.pdf');
+      setSelectedFile(null);
+    } catch {
+      showBanner('No se pudo subir el documento');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -110,14 +135,38 @@ export default function DocumentsScreen() {
 
         {/* SUBIR PDF */}
         <View style={styles.uploadSection}>
-          {/* App logo fallback: emoji (no asset required) */}
           <View style={styles.appLogo}>
             <Text style={styles.appLogoEmoji}>🤖</Text>
           </View>
+          {/* Input web o botón nativo */}
+          {Platform.OS === 'web' ? (
+            <input
+              type="file"
+              accept="application/pdf"
+              style={{ marginBottom: 12, fontSize: 16 }}
+              onChange={handleWebInputChange}
+              data-cy="input-pdf"
+            />
+          ) : (
+            <TouchableOpacity
+              style={[styles.uploadButton, uploading && styles.disabled]}
+              onPress={handlePickDocument}
+              disabled={uploading}
+            >
+              <Text style={styles.uploadButtonText}>Seleccionar PDF</Text>
+            </TouchableOpacity>
+          )}
+          {/* Mostrar nombre del archivo seleccionado */}
+          {selectedFile && (
+            <Text style={{ marginVertical: 8, color: '#333', fontSize: 15 }}>
+              Archivo seleccionado: {selectedFile.name}
+            </Text>
+          )}
+          {/* Botón para subir el archivo seleccionado */}
           <TouchableOpacity
-            style={[styles.uploadButton, uploading && styles.disabled]}
-            onPress={handlePickDocument}
-            disabled={uploading}
+            style={[styles.uploadButton, (!selectedFile || uploading) && styles.disabled]}
+            onPress={handleUploadDocument}
+            disabled={!selectedFile || uploading}
           >
             {uploading ? (
               <ActivityIndicator color="#fff" />
