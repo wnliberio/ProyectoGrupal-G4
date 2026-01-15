@@ -30,6 +30,8 @@ services:
       MONGO_URI: ${MONGO_URI}
       DATABASE_NAME: ai_docs_dev
       ENV: development
+    volumes:
+      - chroma_data:/data/chroma
     depends_on:
       mongo:
         condition: service_healthy
@@ -38,6 +40,7 @@ services:
 
 volumes:
   mongo_dev:
+  chroma_data:
 
 networks:
   docchat-net:
