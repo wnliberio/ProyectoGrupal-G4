@@ -1,6 +1,6 @@
-// 📁 DIRECTORIO: src/types/index.ts
-// 📄 ARCHIVO: index.ts
-// 🔧 Definiciones de tipos TypeScript para la aplicación
+/*Definiciones TypeScript para entidades clave (Message, Chat, DeletedChat, User, AuthContextType). 
+    Se usan en el tipado del frontend
+*/
 
 export interface Message {
   id: string;
