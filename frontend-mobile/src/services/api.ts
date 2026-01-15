@@ -1,3 +1,6 @@
+/*Cliente Axios y wrappers para las APIs de documentos y chat. 
+    Define URLs del backend por entorno y expone métodos documentsAPI y chatAPI
+*/
 import axios from 'axios';
 import Constants from 'expo-constants';
 
