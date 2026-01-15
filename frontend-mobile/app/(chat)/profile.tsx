@@ -113,6 +113,13 @@ export default function ProfileScreen() {
   const userEmail = user?.email || 'email@example.com';
   const userName = user?.name || 'Usuario';
 
+  const capitalizeFirst = (s: string) => {
+    if (!s) return s;
+    return s.charAt(0).toUpperCase() + s.slice(1);
+  };
+
+  const displayName = capitalizeFirst(userName);
+
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       {/* Header */}
@@ -141,11 +148,11 @@ export default function ProfileScreen() {
         <View style={styles.avatarSection}>
           <View style={[styles.avatar, { backgroundColor: '#a855f7' }]}>
             <Text style={styles.avatarText}>
-              {userName.charAt(0).toUpperCase()}
+              {displayName.charAt(0).toUpperCase()}
             </Text>
           </View>
           <Text style={[styles.userName, { color: colors.text }]}>
-            {userName}
+            {displayName}
           </Text>
           <Text style={[styles.userEmail, { color: colors.muted }]}>
             {userEmail}
@@ -185,7 +192,7 @@ export default function ProfileScreen() {
                 Nombre
               </Text>
               <Text style={[styles.settingValue, { color: colors.muted }]}>
-                {userName}
+                {displayName}
               </Text>
             </View>
           </TouchableOpacity>

@@ -47,18 +47,15 @@ export default function ChatScreen() {
         
         {/* HEADER */}
         <View style={[styles.header, { borderBottomColor: colors.border }]}>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Text style={{ color: '#a855f7', fontSize: 16 }}>Atrás</Text>
-          </TouchableOpacity>
-
-          <Text
-            style={[styles.headerTitle, { color: colors.text }]}
-            numberOfLines={1}
-          >
-            {documentName || 'Chat'}
-          </Text>
-
-          <View style={{ width: 50 }} />
+          <View style={styles.titleRow}>
+            <Text style={styles.robotIcon}>🤖</Text>
+            <Text
+              style={[styles.headerTitle, { color: colors.text }]}
+              numberOfLines={1}
+            >
+              {documentName || 'Chat'}
+            </Text>
+          </View>
         </View>
 
         {/* ERROR */}
@@ -181,7 +178,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
@@ -190,9 +187,17 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     fontWeight: '600',
-    flex: 1,
-    marginHorizontal: 16,
+    marginHorizontal: 8,
     textAlign: 'center',
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  robotIcon: {
+    fontSize: 22,
+    marginRight: 8,
   },
   errorBox: {
     margin: 8,

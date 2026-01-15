@@ -22,14 +22,22 @@ export default function LoginScreen() {
   const colors = isDark ? Colors.dark : Colors.light;
 
   const handleContinue = async () => {
-    if (!email.trim()) {
-      alert('Ingresa un email o nombre');
+    const value = email.trim().toLowerCase();
+    if (!value) {
+      alert('Ingresa tu cuenta Gmail');
+      return;
+    }
+
+    // validar formato básico y dominio gmail
+    const gmailRegex = /^[^\s@]+@gmail\.com$/i;
+    if (!gmailRegex.test(value)) {
+      alert('Sólo se permite iniciar sesión con una cuenta Gmail (ej: usuario@gmail.com)');
       return;
     }
 
     setIsLoading(true);
     try {
-      await login(email, 'dummy');
+      await login(value, 'dummy');
       router.replace('/(chat)');
     } catch (error) {
       alert('Error al continuar');

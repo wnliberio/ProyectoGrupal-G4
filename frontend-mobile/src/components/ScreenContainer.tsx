@@ -6,6 +6,7 @@ import {
   StyleSheet,
   View,
   useColorScheme,
+  StatusBar,
 } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
@@ -22,10 +23,17 @@ export default function ScreenContainer({
   const isDark = colorScheme === 'dark';
   const colors = isDark ? Colors.dark : Colors.light;
 
+  const topPadding = Platform.OS === 'android' ? (StatusBar.currentHeight ?? 24) : 24;
+
   const Content = (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
       <View style={styles.outer}>
-        <View style={[styles.phoneFrame, { backgroundColor: colors.background }]}>
+        <View
+          style={[
+            styles.phoneFrame,
+            { backgroundColor: colors.background, paddingTop: topPadding },
+          ]}
+        >
           {children}
         </View>
       </View>
