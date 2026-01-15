@@ -101,6 +101,7 @@ def get_history(user_id, document_id):
     )
 
 
+
 def ensure_first_message(user_id, document_id):
     count = chat_collection.count_documents({
         "user_id": user_id,
