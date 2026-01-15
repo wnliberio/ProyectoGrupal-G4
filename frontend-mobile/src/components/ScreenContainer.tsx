@@ -4,39 +4,71 @@ import {
   Platform,
   SafeAreaView,
   StyleSheet,
+  View,
+  useColorScheme,
 } from 'react-native';
+import { Colors } from '@/constants/Colors';
 
 type ScreenContainerProps = {
   children: React.ReactNode;
-  withKeyboard?: boolean; // 👈 AQUÍ SE DEFINE
+  withKeyboard?: boolean;
 };
 
 export default function ScreenContainer({
   children,
   withKeyboard = false,
 }: ScreenContainerProps) {
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
+  const colors = isDark ? Colors.dark : Colors.light;
+
+  const Content = (
+    <SafeAreaView style={[styles.safeArea, { backgroundColor: colors.background }]}>
+      <View style={styles.outer}>
+        <View style={[styles.phoneFrame, { backgroundColor: colors.background }]}>
+          {children}
+        </View>
+      </View>
+    </SafeAreaView>
+  );
+
   if (withKeyboard) {
     return (
       <KeyboardAvoidingView
-        style={styles.container}
+        style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <SafeAreaView style={styles.container}>
-          {children}
-        </SafeAreaView>
+        {Content}
       </KeyboardAvoidingView>
     );
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {children}
-    </SafeAreaView>
-  );
+  return Content;
 }
 
 const styles = StyleSheet.create({
-  container: {
+  safeArea: {
     flex: 1,
+  },
+
+  // Fondo exterior (desktop/web)
+  outer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Marco tipo teléfono
+  phoneFrame: {
+    flex: 1,
+    width: '100%',
+    maxWidth: 420,          // 📱 ancho móvil
+    borderRadius: 24,
+    overflow: 'hidden',
+    ...Platform.select({
+      web: {
+        boxShadow: '0px 10px 30px rgba(0,0,0,0.15)',
+      },
+    }),
   },
 });
