@@ -4,7 +4,6 @@ from langchain_chroma import Chroma
 from langchain_core.documents import Document
 import os
 
-
 class RAGService:
     def __init__(self):
         # Inicializa OpenAI embeddings y Chroma vector store
