@@ -1,6 +1,9 @@
-// 📁 DIRECTORIO: app/(chat)/trash.tsx
-// 📄 ARCHIVO: trash.tsx
-// 🔧 VERSIÓN CORREGIDA: Errores de casteo y tipado mejorado
+/*Pantalla de perfil del usuario:
+   Muestra avatar con inicial, nombre y email.
+     Ofrece acciones de cerrar sesión y eliminar cuenta (ambas usan logout).
+       Usa useSafeAreaInsets y estilos para layout.
+          Incluye mensajes de confirmación y navegación de regreso a login.
+*/
 
 import React from 'react';
 import {
