@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import * as Google from 'expo-auth-session/providers/google';
+import * as WebBrowser from 'expo-web-browser';
 import {
   View,
   Text,
@@ -13,6 +15,22 @@ import { Colors } from '@/constants/Colors';
 import ScreenContainer from '@/src/components/ScreenContainer'; // 👈 NUEVO
 
 export default function LoginScreen() {
+  // Google Auth
+  WebBrowser.maybeCompleteAuthSession();
+    const [request, response, promptAsync] = Google.useAuthRequest({
+      androidClientId:
+        "294903193009-v92aa5i8jnauvaiqhv1mig4i3dufg14a.apps.googleusercontent.com",
+      webClientId:
+        "294903193009-hk7ilc3fhklnbjm3jge76slo1h2beabc.apps.googleusercontent.com",
+      // iosClientId: 'iOS_CLIENT_ID',
+    });
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
+      // Manejar el token de Google: authentication.accessToken
+    }
+  }, [response]);
   const router = useRouter();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -93,6 +111,14 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </View>
 
+            {/* Botón Login con Google */}
+            <TouchableOpacity
+              style={[styles.button, { backgroundColor: '#4285F4', marginTop: 12 }]}
+              disabled={!request}
+              onPress={() => promptAsync()}
+            >
+              <Text style={styles.buttonText}>Iniciar con Google</Text>
+            </TouchableOpacity>
           <Text style={[styles.note, { color: colors.muted }]}>
             No se requiere autenticacion para testing
           </Text>
