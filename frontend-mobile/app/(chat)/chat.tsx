@@ -147,7 +147,6 @@ export default function ChatScreen() {
           onChangeText={setMessageText}
           editable={!loading}
           multiline
-          maxHeight={100}
         />
         <TouchableOpacity
           style={[
