@@ -41,7 +41,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "ENV": "dev",
+      "ENV": "prod",
       "router": {},
       "eas": {
         "projectId": "85391cb8-b6db-4838-9a89-2f781608f6b4"
