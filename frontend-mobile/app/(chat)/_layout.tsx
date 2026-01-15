@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { FileText, MessageCircle, User } from 'lucide-react-native';
+import { FileText, MessageCircle, TrashIcon, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
@@ -37,16 +37,6 @@ export default function ChatLayout() {
       />
 
       <Tabs.Screen
-        name="chat"
-        options={{
-          title: 'Chat',
-          tabBarIcon: ({ color, size }) => (
-            <MessageCircle color={color} size={size} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="profile"
         options={{
           title: 'Perfil',
@@ -55,6 +45,17 @@ export default function ChatLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="trash"
+        options={{
+          title: 'Papelera',
+          tabBarIcon: ({ color, size }) => (
+            <TrashIcon color={color} size={size} />
+          ),
+        }}
+      />  
+
     </Tabs>
   );
 }

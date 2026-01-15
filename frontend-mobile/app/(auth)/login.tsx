@@ -60,7 +60,7 @@ export default function LoginScreen() {
 
           <View style={styles.form}>
             <Text style={[styles.label, { color: colors.text }]}>
-              Email o nombre
+              Email
             </Text>
 
             <TextInput
