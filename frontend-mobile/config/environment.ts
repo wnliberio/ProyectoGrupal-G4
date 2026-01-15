@@ -1,6 +1,7 @@
-// 📁 DIRECTORIO: config/
-// 📄 ARCHIVO: environment.ts
-
+/*Define las variables de entorno públicas para URLs del backend y estado de entorno (dev/prod).
+   Expone helpers para construir URLs de auth y de API general.
+     En desarrollo imprime la configuración en consola para depurar
+*/
 export const ENV = {
   // Backend URLs
   BACKEND_URL: process.env.EXPO_PUBLIC_BACKEND_URL,
@@ -31,7 +32,7 @@ export const getApiUrl = (endpoint: string): string => {
 
 // Debug: Mostrar configuración en desarrollo
 if (ENV.IS_DEVELOPMENT) {
-  console.log('🔧 Configuración cargada:', {
+  console.log('Configuración cargada:', {
     BACKEND_URL: ENV.BACKEND_URL,
     BACKEND_API_AUTH: ENV.BACKEND_API_AUTH,
     ENV: process.env.EXPO_PUBLIC_ENV,
