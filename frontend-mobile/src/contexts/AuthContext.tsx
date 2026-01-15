@@ -1,3 +1,6 @@
+/*Contexto global de autenticación. Mantiene el usuario y estado de sesión, y define funciones login 
+   y logout (mock). También expone useAuth para consumir el contexto.
+*/
 import React, { createContext, useState, ReactNode } from 'react';
 
 interface User {
