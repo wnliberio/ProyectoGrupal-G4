@@ -1,3 +1,7 @@
+/*Define la paleta de colores para tema claro y oscuro.
+   Exporta Colors (light/dark) y un gradiente principal.
+    Se usa en las pantallas para mantener estilos consistentes.
+*/
 const tintColorLight = '#A855F7';
 const tintColorDark = '#EC4899';
 
