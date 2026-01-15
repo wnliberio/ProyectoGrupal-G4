@@ -29,7 +29,7 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       await login(email, 'dummy');
-      router.replace('/(chat)/index');
+      router.replace('/(chat)');
     } catch (error) {
       alert('Error al continuar');
     } finally {
