@@ -3,6 +3,7 @@ import React, { createContext, useState, ReactNode } from 'react';
 interface User {
   id: string;
   name: string;
+  email?: string;
 }
 
 interface AuthContextType {
@@ -26,6 +27,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const dummyUser: User = {
       id: `user-${Date.now()}`,
       name: email.split('@')[0] || 'Usuario',
+      email,
     };
     setUser(dummyUser);
     setIsAuthenticated(true);

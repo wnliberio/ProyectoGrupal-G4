@@ -15,6 +15,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { useDocumentsAndChat } from '@/src/hooks/useDocumentsAndChat';
 import { Colors } from '@/constants/Colors';
+import ScreenContainer from '@/src/components/ScreenContainer';
 
 export default function ChatScreen() {
   const router = useRouter();
@@ -43,123 +44,125 @@ export default function ChatScreen() {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[styles.container, { backgroundColor: colors.background }]}
-      keyboardVerticalOffset={100}
-    >
-      <View style={[styles.header, { borderBottomColor: colors.border }]}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Text style={{ color: '#a855f7', fontSize: 16 }}>Atras</Text>
-        </TouchableOpacity>
-        <Text
-          style={[styles.headerTitle, { color: colors.text }]}
-          numberOfLines={1}
-        >
-          {documentName || 'Chat'}
-        </Text>
-        <View style={{ width: 50 }} />
-      </View>
-
-      {error && (
-        <View
-          style={[
-            styles.errorBox,
-            { backgroundColor: '#fee2e2', borderColor: '#fca5a5' },
-          ]}
-        >
-          <Text style={{ color: '#991b1b', fontSize: 12 }}>{error}</Text>
-        </View>
-      )}
-
-      <ScrollView
-        style={styles.messagesContainer}
-        contentContainerStyle={styles.messagesContent}
+    <ScreenContainer>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={[styles.container, { backgroundColor: colors.background }]}
+        keyboardVerticalOffset={100}
       >
-        {messages.length === 0 ? (
-          <View style={styles.emptyMessages}>
-            <Text style={[styles.emptyText, { color: colors.muted }]}>
-              Inicia el chat escribiendo una pregunta sobre el documento
-            </Text>
+        <View style={[styles.header, { borderBottomColor: colors.border }]}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <Text style={{ color: '#a855f7', fontSize: 16 }}>Atras</Text>
+          </TouchableOpacity>
+          <Text
+            style={[styles.headerTitle, { color: colors.text }]}
+            numberOfLines={1}
+          >
+            {documentName || 'Chat'}
+          </Text>
+          <View style={{ width: 50 }} />
+        </View>
+
+        {error && (
+          <View
+            style={[
+              styles.errorBox,
+              { backgroundColor: '#fee2e2', borderColor: '#fca5a5' },
+            ]}
+          >
+            <Text style={{ color: '#991b1b', fontSize: 12 }}>{error}</Text>
           </View>
-        ) : (
-          messages.map((msg) => (
-            <View
-              key={msg.id}
-              style={[
-                styles.messageBubble,
-                msg.role === 'user'
-                  ? styles.userMessage
-                  : styles.assistantMessage,
-                {
-                  backgroundColor:
-                    msg.role === 'user'
-                      ? '#a855f7'
-                      : colors.cardBackground,
-                },
-              ]}
-            >
-              <Text
+        )}
+
+        <ScrollView
+          style={styles.messagesContainer}
+          contentContainerStyle={styles.messagesContent}
+        >
+          {messages.length === 0 ? (
+            <View style={styles.emptyMessages}>
+              <Text style={[styles.emptyText, { color: colors.muted }]}>
+                Inicia el chat escribiendo una pregunta sobre el documento
+              </Text>
+            </View>
+          ) : (
+            messages.map((msg) => (
+              <View
+                key={msg.id}
                 style={[
-                  styles.messageText,
+                  styles.messageBubble,
+                  msg.role === 'user'
+                    ? styles.userMessage
+                    : styles.assistantMessage,
                   {
-                    color:
+                    backgroundColor:
                       msg.role === 'user'
-                        ? '#fff'
-                        : colors.text,
+                        ? '#a855f7'
+                        : colors.cardBackground,
                   },
                 ]}
               >
-                {msg.content}
+                <Text
+                  style={[
+                    styles.messageText,
+                    {
+                      color:
+                        msg.role === 'user'
+                          ? '#fff'
+                          : colors.text,
+                    },
+                  ]}
+                >
+                  {msg.content}
+                </Text>
+              </View>
+            ))
+          )}
+
+          {loading && (
+            <View style={styles.loadingMessage}>
+              <ActivityIndicator color={colors.text} />
+              <Text style={[styles.loadingText, { color: colors.muted }]}> 
+                Generando respuesta...
               </Text>
             </View>
-          ))
-        )}
+          )}
+        </ScrollView>
 
-        {loading && (
-          <View style={styles.loadingMessage}>
-            <ActivityIndicator color={colors.text} />
-            <Text style={[styles.loadingText, { color: colors.muted }]}>
-              Generando respuesta...
-            </Text>
-          </View>
-        )}
-      </ScrollView>
-
-      <View
-        style={[
-          styles.inputContainer,
-          { borderTopColor: colors.border, backgroundColor: colors.background },
-        ]}
-      >
-        <TextInput
+        <View
           style={[
-            styles.input,
-            {
-              backgroundColor: colors.inputBackground,
-              color: colors.text,
-              borderColor: colors.border,
-            },
+            styles.inputContainer,
+            { borderTopColor: colors.border, backgroundColor: colors.background },
           ]}
-          placeholder="Escribe tu pregunta..."
-          placeholderTextColor={colors.muted}
-          value={messageText}
-          onChangeText={setMessageText}
-          editable={!loading}
-          multiline
-        />
-        <TouchableOpacity
-          style={[
-            styles.sendButton,
-            (loading || !messageText.trim()) && styles.sendButtonDisabled,
-          ]}
-          onPress={handleSendMessage}
-          disabled={loading || !messageText.trim()}
         >
-          <Text style={styles.sendButtonText}>Enviar</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          <TextInput
+            style={[
+              styles.input,
+              {
+                backgroundColor: colors.inputBackground,
+                color: colors.text,
+                borderColor: colors.border,
+              },
+            ]}
+            placeholder="Escribe tu pregunta..."
+            placeholderTextColor={colors.muted}
+            value={messageText}
+            onChangeText={setMessageText}
+            editable={!loading}
+            multiline
+          />
+          <TouchableOpacity
+            style={[
+              styles.sendButton,
+              (loading || !messageText.trim()) && styles.sendButtonDisabled,
+            ]}
+            onPress={handleSendMessage}
+            disabled={loading || !messageText.trim()}
+          >
+            <Text style={styles.sendButtonText}>Enviar</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </ScreenContainer>
   );
 }
 
