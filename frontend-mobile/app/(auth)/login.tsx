@@ -10,6 +10,7 @@ import {
 import { useRouter } from 'expo-router';
 import { useAuth } from '@/src/contexts/AuthContext';
 import { Colors } from '@/constants/Colors';
+import ScreenContainer from '@/src/components/ScreenContainer'; // 👈 NUEVO
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -38,47 +39,58 @@ export default function LoginScreen() {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <View style={styles.content}>
-        <Text style={[styles.title, { color: colors.text }]}>Chat PDF</Text>
-        <Text style={[styles.subtitle, { color: colors.muted }]}>
-          Chatea con tus documentos
-        </Text>
+    <ScreenContainer withKeyboard>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <View style={styles.content}>
+          <Text style={[styles.title, { color: colors.text }]}>
+            Chat PDF
+          </Text>
 
-        <View style={styles.form}>
-          <Text style={[styles.label, { color: colors.text }]}>Email o nombre</Text>
-          <TextInput
-            style={[
-              styles.input,
-              { backgroundColor: colors.inputBackground, color: colors.text },
-            ]}
-            placeholder="tu@email.com"
-            placeholderTextColor={colors.muted}
-            value={email}
-            onChangeText={setEmail}
-            editable={!isLoading}
-            autoCapitalize="none"
-          />
+          <Text style={[styles.subtitle, { color: colors.muted }]}>
+            Chatea con tus documentos
+          </Text>
 
-          <TouchableOpacity
-            style={[
-              styles.button,
-              isLoading && styles.buttonDisabled,
-            ]}
-            onPress={handleContinue}
-            disabled={isLoading}
-          >
-            <Text style={styles.buttonText}>
-              {isLoading ? 'Cargando...' : 'Continuar'}
+          <View style={styles.form}>
+            <Text style={[styles.label, { color: colors.text }]}>
+              Email o nombre
             </Text>
-          </TouchableOpacity>
-        </View>
 
-        <Text style={[styles.note, { color: colors.muted }]}>
-          No se requiere autenticacion para testing
-        </Text>
+            <TextInput
+              style={[
+                styles.input,
+                {
+                  backgroundColor: colors.inputBackground,
+                  color: colors.text,
+                },
+              ]}
+              placeholder="tu@email.com"
+              placeholderTextColor={colors.muted}
+              value={email}
+              onChangeText={setEmail}
+              editable={!isLoading}
+              autoCapitalize="none"
+            />
+
+            <TouchableOpacity
+              style={[
+                styles.button,
+                isLoading && styles.buttonDisabled,
+              ]}
+              onPress={handleContinue}
+              disabled={isLoading}
+            >
+              <Text style={styles.buttonText}>
+                {isLoading ? 'Cargando...' : 'Continuar'}
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={[styles.note, { color: colors.muted }]}>
+            No se requiere autenticacion para testing
+          </Text>
+        </View>
       </View>
-    </View>
+    </ScreenContainer>
   );
 }
 

@@ -1,49 +1,42 @@
 import React from 'react';
 import {
-  SafeAreaView,
-  View,
-  StyleSheet,
-  useWindowDimensions,
+  KeyboardAvoidingView,
   Platform,
-  StatusBar,
+  SafeAreaView,
+  StyleSheet,
 } from 'react-native';
 
-type Props = {
+type ScreenContainerProps = {
   children: React.ReactNode;
-  center?: boolean;
+  withKeyboard?: boolean; // 👈 AQUÍ SE DEFINE
 };
 
-export default function ScreenContainer({ children, center = false }: Props) {
-  const { width } = useWindowDimensions();
-  const contentWidth = Math.min(width * 0.96, 420);
-  const paddingTop = Platform.OS === 'android' ? (StatusBar.currentHeight ?? 12) : 12;
+export default function ScreenContainer({
+  children,
+  withKeyboard = false,
+}: ScreenContainerProps) {
+  if (withKeyboard) {
+    return (
+      <KeyboardAvoidingView
+        style={styles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <SafeAreaView style={styles.container}>
+          {children}
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+    );
+  }
 
   return (
-    <SafeAreaView style={[styles.safeArea, { paddingTop }]}> 
-      <View
-        style={[
-          styles.container,
-          { width: contentWidth, paddingHorizontal: Math.max(12, width * 0.03) },
-          center && styles.center,
-        ]}
-      >
-        {children}
-      </View>
+    <SafeAreaView style={styles.container}>
+      {children}
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: 'transparent',
-  },
   container: {
     flex: 1,
-    alignSelf: 'center',
-    width: '100%',
-  },
-  center: {
-    justifyContent: 'center',
   },
 });
