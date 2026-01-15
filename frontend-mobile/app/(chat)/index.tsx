@@ -1,3 +1,8 @@
+/*Lista documentos subidos del usuario.
+    Permite subir PDFs con DocumentPicker.
+      Al seleccionar un documento, navega al chat y pasa documentId y documentName por parámetros.
+        Todo esto se gestiona con el hook useDocumentsAndChat y estilos de UI para estados de carga/errores.
+*/
 import React, { useState } from 'react';
 import {
   View,
