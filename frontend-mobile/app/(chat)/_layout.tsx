@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import { FileText, MessageCircle, TrashIcon, User } from 'lucide-react-native';
+import { FileText, TrashIcon, User } from 'lucide-react-native';
 import { useColorScheme } from 'react-native';
 import { Colors } from '@/constants/Colors';
 
@@ -26,6 +26,7 @@ export default function ChatLayout() {
         },
       }}
     >
+      {/* DOCUMENTOS */}
       <Tabs.Screen
         name="index"
         options={{
@@ -36,6 +37,7 @@ export default function ChatLayout() {
         }}
       />
 
+      {/* PERFIL */}
       <Tabs.Screen
         name="profile"
         options={{
@@ -46,6 +48,7 @@ export default function ChatLayout() {
         }}
       />
 
+      {/* PAPELERA */}
       <Tabs.Screen
         name="trash"
         options={{
@@ -54,8 +57,15 @@ export default function ChatLayout() {
             <TrashIcon color={color} size={size} />
           ),
         }}
-      />  
+      />
 
+      {/* CHAT OCULTO (MUY IMPORTANTE) */}
+      <Tabs.Screen
+        name="chat"
+        options={{
+          href: null, // 👈 OCULTA COMPLETAMENTE LA PESTAÑA
+        }}
+      />
     </Tabs>
   );
 }
